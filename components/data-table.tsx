@@ -361,13 +361,12 @@ interface CryptoData {
   atl: number;
   atl_change_percentage: number;
   atl_date: string;
-  roi: any;
+  roi: unknown;
   last_updated: string;
 }
 
 export function DataTable({
   data: initialData,
-  cryptoData,
 }: {
   data: z.infer<typeof schema>[]
   cryptoData?: CryptoData[]

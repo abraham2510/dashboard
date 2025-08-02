@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
+
 import { IconTrendingUp, IconTrendingDown } from "@tabler/icons-react"
 
 interface CryptoData {
@@ -50,7 +50,7 @@ interface CryptoData {
   atl: number;
   atl_change_percentage: number;
   atl_date: string;
-  roi: any;
+  roi: unknown;
   last_updated: string;
 }
 

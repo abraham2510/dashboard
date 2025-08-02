@@ -57,7 +57,7 @@ interface CryptoData {
   atl: number;
   atl_change_percentage: number;
   atl_date: string;
-  roi: any;
+  roi: unknown;
   last_updated: string;
 }
 
@@ -73,9 +73,9 @@ const generatePriceData = (cryptoData: CryptoData[]) => {
   const data = [];
   
   for (let i = 0; i < 30; i++) {
-    const dayData: any = { date: `2024-${String(Math.floor(i / 30) + 1).padStart(2, '0')}-${String((i % 30) + 1).padStart(2, '0')}` };
+    const dayData: Record<string, string | number> = { date: `2024-${String(Math.floor(i / 30) + 1).padStart(2, '0')}-${String((i % 30) + 1).padStart(2, '0')}` };
     
-    topCoins.forEach((coin, index) => {
+    topCoins.forEach((coin) => {
       const basePrice = coin.current_price;
       const variation = (Math.random() - 0.5) * 0.1; // ±5% variation
       dayData[coin.symbol.toLowerCase()] = basePrice * (1 + variation);
@@ -135,12 +135,6 @@ export function ChartAreaInteractive({ cryptoData }: ChartAreaInteractiveProps) 
     startDate.setDate(startDate.getDate() - daysToSubtract)
     return date >= startDate
   })
-
-  const formatCurrency = (value: number) => {
-    if (value >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
-    if (value >= 1e3) return `$${(value / 1e3).toFixed(1)}K`;
-    return `$${value.toFixed(2)}`;
-  };
 
   return (
     <Card className="@container/card">
@@ -236,7 +230,7 @@ export function ChartAreaInteractive({ cryptoData }: ChartAreaInteractiveProps) 
               cursor={false}
               content={<ChartTooltipContent indicator="dot" />}
             />
-            {cryptoData.slice(0, 2).map((coin, index) => (
+            {cryptoData.slice(0, 2).map((coin) => (
             <Area
                 key={coin.symbol}
                 dataKey={coin.symbol.toLowerCase()}

@@ -8,8 +8,7 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { getWatchlist, removeFromWatchlist } from "@/lib/watchlist";
 import api from "@/lib/api";
 import Loading from "@/components/loading";
@@ -90,10 +89,7 @@ export default function WatchlistPage() {
     fetchWatchlistCoins();
   }, []);
 
-  const handleRemoveFromWatchlist = (coinId) => {
-    removeFromWatchlist(coinId);
-    setCoins(prev => prev.filter(c => c.id !== coinId));
-  };
+
 
   if (loading) {
     return <Loading />;

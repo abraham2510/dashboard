@@ -35,7 +35,7 @@ interface CryptoData {
   atl: number;
   atl_change_percentage: number;
   atl_date: string;
-  roi: any;
+  roi: unknown;
   last_updated: string;
 }
 

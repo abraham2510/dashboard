@@ -19,7 +19,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ChartConfig, ChartContainer } from "@/components/ui/chart";
+
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
@@ -62,27 +62,7 @@ export default function Page() {
     router.push(`/coins/${id}/market_chart`);
   };
 
-  // Chart configuration
-  const chartConfig = {
-    type: "line",
-    data: marketChartData,
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          display: false,
-        },
-      },
-      scales: {
-        x: {
-          display: false,
-        },
-        y: {
-          display: false,
-        },
-      },
-    },
-  };
+
 
   // StarButton component
   const StarButton = ({ coinId }) => {
@@ -147,7 +127,7 @@ export default function Page() {
           },
         });
         
-        const chartData = res.data.prices.map(([timestamp, price], index) => ({
+        const chartData = res.data.prices.map(([timestamp, price]) => ({
           date: new Date(timestamp).toLocaleDateString('en-US', { 
             month: 'short', 
             day: 'numeric' 

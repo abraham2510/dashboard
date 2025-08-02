@@ -5,7 +5,6 @@ import {
   IconSearch,
   IconDotsVertical,
   IconLogout,
-  IconNotification,
   IconCoin,
   IconChartBar,
 } from "@tabler/icons-react"
