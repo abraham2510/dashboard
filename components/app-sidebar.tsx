@@ -34,34 +34,34 @@ import {
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "Abraham",
+    email: "abrahambillclinton.com",
     avatar: "",
   },
   navMain: [
     {
       title: "dashboard",
       url: "/",
-      icon: IconCoin,
+      icon: IconChartBar,
     },
     {
-      title: "Cryptocurrency Market",
+      title: "Top Cryptocurrency",
       url: "/cryptocurrencyMarket",
       icon: IconCoin,
     },
     {
       title: "CoinsList",
       url: "/coinsList",
-      icon: IconChartBar,
+      icon: IconFileDescription,
     },
     {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
+      title: "WatchList",
+      url: "/watchList",
+      icon: IconSearch,
     },
     {
       title: "Team",
-      url: "#",
+      url: "/About",
       icon: IconUsers,
     },
   ],
@@ -73,12 +73,12 @@ const data = {
       url: "#",
       items: [
         {
-          title: "Active Proposals",
-          url: "#",
+          title: "Dashboard",
+          url: "/",
         },
         {
-          title: "Archived",
-          url: "#",
+          title: "CoinsList",
+          url: "/coinsList",
         },
       ],
     },

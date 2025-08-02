@@ -1,11 +1,13 @@
 "use client"
 
+import Link from "next/link";
 import {
-  IconCreditCard,
+  IconSearch,
   IconDotsVertical,
   IconLogout,
   IconNotification,
-  IconUserCircle,
+  IconCoin,
+  IconChartBar,
 } from "@tabler/icons-react"
 
 import {
@@ -28,6 +30,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+
 
 export function NavUser({
   user,
@@ -85,16 +88,22 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <IconUserCircle />
-                Account
+                <IconChartBar />
+                <Link href="/">
+                Dashboard
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <IconCreditCard />
-                Billing
+                <IconCoin />
+                <Link href="/">
+                CoinsList
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <IconNotification />
-                Notifications
+                <IconSearch />
+                <Link href="/">
+                WatchList
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

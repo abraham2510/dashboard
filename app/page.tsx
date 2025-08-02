@@ -10,9 +10,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 import api from "@/lib/api"
-import axios from 'axios';
-
-import data from "./data.json"
+import Loading from "@/components/loading"
 
 interface CryptoData {
   id: string;
@@ -71,6 +69,10 @@ export default function Page() {
 
     fetchCoins();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <SidebarProvider

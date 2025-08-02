@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
@@ -11,6 +12,31 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Line,
+  LineChart,
+  Tooltip,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
+import Loading from "@/components/loading";
+
+// Custom tooltip component
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-background border border-border rounded-lg p-3 shadow-lg">
+        <p className="text-sm font-medium text-muted-foreground">{label}</p>
+        <p className="text-lg font-bold text-foreground">
+          ${payload[0].value.toFixed(2)}
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
 
 export default function MarketChartPage() {
   const params = useParams();
@@ -20,6 +46,33 @@ export default function MarketChartPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [timeframe, setTimeframe] = useState("7"); // Default to 7 days
+  const [formattedChartData, setFormattedChartData] = useState([]);
+
+  const router = useRouter();
+  
+  const backtoMarketChart = () => {
+    router.push(`/coins/${id}`);
+  }
+
+  // Calculate price change for color
+  const getPriceChangeColor = () => {
+    if (formattedChartData.length < 2) return "#3b82f6";
+    const firstPrice = formattedChartData[0]?.price;
+    const lastPrice = formattedChartData[formattedChartData.length - 1]?.price;
+    return lastPrice >= firstPrice ? "#10b981" : "#ef4444";
+  };
+
+  const getTimeframeLabel = () => {
+    switch (timeframe) {
+      case "1": return "24 Hours";
+      case "7": return "7 Days";
+      case "14": return "14 Days";
+      case "30": return "30 Days";
+      case "90": return "3 Months";
+      case "365": return "1 Year";
+      default: return "7 Days";
+    }
+  };
 
   useEffect(() => {
     const fetchMarketChart = async () => {
@@ -45,10 +98,25 @@ export default function MarketChartPage() {
           params: {
             vs_currency: "usd",
             days: timeframe,
-            interval: timeframe === "1" ? "hourly" : "daily",
+            ...(timeframe !== "1" && { interval: "daily" }),
           },
         });
         setChartData(chartRes.data);
+
+        // Format chart data for the line chart
+        const formattedData = chartRes.data.prices.map(([timestamp, price]) => ({
+          date: new Date(timestamp).toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric' 
+          }),
+          price: price,
+          time: new Date(timestamp).toLocaleTimeString('en-US', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+          }),
+        }));
+        setFormattedChartData(formattedData);
+
         console.log("Fetched market chart data:", chartRes.data);
       } catch (err) {
         console.error("❌ Failed to fetch market chart data:", err);
@@ -73,40 +141,16 @@ export default function MarketChartPage() {
   ];
 
   if (loading) {
-    return (
-      <SidebarProvider
-        style={
-          {
-            "--sidebar-width": "calc(var(--spacing) * 72)",
-            "--header-height": "calc(var(--spacing) * 12)",
-          }
-        }
-      >
-        <AppSidebar variant="inset" />
-        <SidebarInset>
-          <SiteHeader />
-          <div className="flex flex-1 flex-col">
-            <div className="flex flex-col items-center justify-center min-h-screen">
-              <div className="flex items-center gap-2">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                <span className="text-lg">Loading market chart data...</span>
-              </div>
-            </div>
-          </div>
-        </SidebarInset>
-      </SidebarProvider>
-    );
+    return <Loading />;
   }
 
   if (error) {
     return (
       <SidebarProvider
-        style={
-          {
-            "--sidebar-width": "calc(var(--spacing) * 72)",
-            "--header-height": "calc(var(--spacing) * 12)",
-          }
-        }
+        style={{
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        }}
       >
         <AppSidebar variant="inset" />
         <SidebarInset>
@@ -116,12 +160,14 @@ export default function MarketChartPage() {
               <div className="text-center">
                 <h2 className="text-2xl font-bold text-red-600 mb-2">Error</h2>
                 <p className="text-muted-foreground">{error}</p>
-                <button 
+                <div>
+                  <button 
                   onClick={() => window.location.reload()} 
-                  className="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
+                  className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90"
                 >
                   Try Again
                 </button>
+                </div>
               </div>
             </div>
           </div>
@@ -132,12 +178,10 @@ export default function MarketChartPage() {
 
   return (
     <SidebarProvider
-      style={
-        {
-          "--sidebar-width": "calc(var(--spacing) * 72)",
-          "--header-height": "calc(var(--spacing) * 12)",
-        }
-      }
+      style={{
+        "--sidebar-width": "calc(var(--spacing) * 72)",
+        "--header-height": "calc(var(--spacing) * 12)",
+      }}
     >
       <AppSidebar variant="inset" />
       <SidebarInset>
@@ -153,6 +197,9 @@ export default function MarketChartPage() {
                   <p className="text-muted-foreground">
                     Price history and market data for {coinInfo?.name || "this cryptocurrency"}
                   </p>
+                </div>
+                <div className="mb-4">
+                  <Button onClick={backtoMarketChart} variant="outline" size="sm" className="flex items-center gap-2">View Coin Details</Button>
                 </div>
 
                 {/* Timeframe Selector */}
@@ -173,6 +220,73 @@ export default function MarketChartPage() {
 
                 {chartData && (
                   <div className="space-y-6">
+                    {/* Enhanced Price Chart */}
+                    {formattedChartData.length > 0 && (
+                      <Card className="overflow-hidden">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                          <div className="flex items-center gap-4">
+                            <CardTitle className="text-sm font-normal">Price Chart ({getTimeframeLabel()})</CardTitle>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: getPriceChangeColor() }}></div>
+                            <span className="text-xs text-muted-foreground">
+                              {formattedChartData.length > 1 && (
+                                formattedChartData[formattedChartData.length - 1].price >= formattedChartData[0].price 
+                                  ? "↗ Up" 
+                                  : "↘ Down"
+                              )}
+                            </span>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="pb-0">
+                          <div className="text-2xl font-bold mb-2">
+                            ${formattedChartData[formattedChartData.length - 1]?.price?.toFixed(2) || "N/A"}
+                          </div>
+                          <p className="text-xs text-muted-foreground mb-4">Current price</p>
+                          <div className="h-[300px] w-full">
+                            <ResponsiveContainer width="100%" height="100%">
+                              <LineChart
+                                data={formattedChartData}
+                                margin={{ top: 10, right: 20, left: 20, bottom: 10 }}
+                              >
+                                <defs>
+                                  <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor={getPriceChangeColor()} stopOpacity={0.3}/>
+                                    <stop offset="95%" stopColor={getPriceChangeColor()} stopOpacity={0.05}/>
+                                  </linearGradient>
+                                </defs>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.1} />
+                                <XAxis 
+                                  dataKey="date" 
+                                  stroke="#6b7280" 
+                                  fontSize={12}
+                                  tickLine={false}
+                                  axisLine={false}
+                                />
+                                <YAxis 
+                                  stroke="#6b7280" 
+                                  fontSize={12}
+                                  tickLine={false}
+                                  axisLine={false}
+                                  tickFormatter={(value) => `$${value.toFixed(0)}`}
+                                />
+                                <Tooltip content={<CustomTooltip />} />
+                                <Line
+                                  type="monotone"
+                                  dataKey="price"
+                                  stroke={getPriceChangeColor()}
+                                  strokeWidth={3}
+                                  dot={false}
+                                  fill="url(#priceGradient)"
+                                  fillOpacity={0.3}
+                                />
+                              </LineChart>
+                            </ResponsiveContainer>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    )}
+
                     {/* Price Chart Data */}
                     <Card>
                       <CardHeader>

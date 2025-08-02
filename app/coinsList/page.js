@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/components/loading";
 import {
   Table,
   TableBody,
@@ -62,27 +63,7 @@ export default function Page() {
 
   if (loading) {
     return (
-      <SidebarProvider
-        style={
-          {
-            "--sidebar-width": "calc(var(--spacing) * 72)",
-            "--header-height": "calc(var(--spacing) * 12)",
-          }
-        }
-      >
-        <AppSidebar variant="inset" />
-        <SidebarInset>
-          <SiteHeader />
-          <div className="flex flex-1 flex-col">
-            <div className="flex flex-col items-center justify-center min-h-screen">
-              <div className="flex items-center gap-2">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                <span className="text-lg">Loading cryptocurrency list...</span>
-              </div>
-            </div>
-          </div>
-        </SidebarInset>
-      </SidebarProvider>
+      <Loading />
     );
   }
 

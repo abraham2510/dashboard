@@ -12,6 +12,7 @@ import {
   getPaginationRowModel,
   getFilteredRowModel,
 } from "@tanstack/react-table"
+
 import {
   Table,
   TableBody,
@@ -20,9 +21,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
 import { IconTrendingUp, IconTrendingDown } from "@tabler/icons-react"
 
 interface CryptoData {
@@ -31,48 +32,50 @@ interface CryptoData {
   name: string;
   image: string;
   current_price: number;
-  market_cap: number;
   market_cap_rank: number;
-  fully_diluted_valuation: number;
-  total_volume: number;
-  high_24h: number;
-  low_24h: number;
-  price_change_24h: number;
   price_change_percentage_24h: number;
-  market_cap_change_24h: number;
-  market_cap_change_percentage_24h: number;
+  market_cap: number;
+  total_volume: number;
   circulating_supply: number;
-  total_supply: number;
-  max_supply: number;
-  ath: number;
-  ath_change_percentage: number;
-  ath_date: string;
-  atl: number;
-  atl_change_percentage: number;
-  atl_date: string;
-  roi: any;
-  last_updated: string;
 }
 
-interface CryptoTableProps {
+interface watchlistTableProps {
   cryptoData: CryptoData[];
 }
 
-export function CryptoTable({ cryptoData }: CryptoTableProps) {
+export function WatchlistTable({ cryptoData }: watchlistTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = React.useState("")
+  const [watchlistData, setWatchlistData] = React.useState<CryptoData[]>([])
 
+  // Formatters
   const formatCurrency = (value: number) => {
-    if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`;
-    if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
-    if (value >= 1e6) return `$${(value / 1e6).toFixed(2)}M`;
-    if (value >= 1e3) return `$${(value / 1e3).toFixed(2)}K`;
-    return `$${value.toFixed(2)}`;
-  };
+    if (value >= 1e12) return `$${(value / 1e12).toFixed(2)}T`
+    if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`
+    if (value >= 1e6) return `$${(value / 1e6).toFixed(2)}M`
+    if (value >= 1e3) return `$${(value / 1e3).toFixed(2)}K`
+    return `$${value.toFixed(2)}`
+  }
 
   const formatPercentage = (value: number) => {
-    return `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`;
-  };
+    return `${value >= 0 ? '+' : ''}${value.toFixed(2)}%`
+  }
+
+  // Use the passed cryptoData directly
+  React.useEffect(() => {
+    console.log("WatchlistTable received cryptoData:", cryptoData);
+    setWatchlistData(cryptoData)
+  }, [cryptoData])
+
+  const removeFromWatchlist = (coinId: string) => {
+    // Remove from localStorage
+    const storedWatchlist = JSON.parse(localStorage.getItem("crypto_watchlist") || "[]")
+    const updated = storedWatchlist.filter((id: string) => id !== coinId)
+    localStorage.setItem("crypto_watchlist", JSON.stringify(updated))
+    
+    // Remove from local state
+    setWatchlistData((prev) => prev.filter((coin) => coin.id !== coinId))
+  }
 
   const columns: ColumnDef<CryptoData>[] = [
     {
@@ -90,7 +93,7 @@ export function CryptoTable({ cryptoData }: CryptoTableProps) {
           <div className="relative w-8 h-8 rounded-full flex-shrink-0 overflow-hidden">
             <Image 
               src={row.original.image} 
-              alt={row.original.name}
+              alt={row.original.name} 
               width={32}
               height={32}
               className="object-cover"
@@ -122,14 +125,14 @@ export function CryptoTable({ cryptoData }: CryptoTableProps) {
       accessorKey: "price_change_percentage_24h",
       header: "24h Change",
       cell: ({ row }) => {
-        const change = row.original.price_change_percentage_24h;
-        const isPositive = change >= 0;
+        const change = row.original.price_change_percentage_24h
+        const isPositive = change >= 0
         return (
           <div className={`flex items-center gap-1 ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
             {isPositive ? <IconTrendingUp className="w-4 h-4" /> : <IconTrendingDown className="w-4 h-4" />}
             <span className="font-medium">{formatPercentage(change)}</span>
           </div>
-        );
+        )
       },
     },
     {
@@ -151,23 +154,20 @@ export function CryptoTable({ cryptoData }: CryptoTableProps) {
       ),
     },
     {
-      accessorKey: "circulating_supply",
-      header: "Circulating Supply",
+      id: "remove",
+      header: "Remove",
       cell: ({ row }) => (
-        <div className="font-medium">
-          {row.original.circulating_supply.toLocaleString()} {row.original.symbol.toUpperCase()}
-        </div>
+        <Button  className="hover:bg-red-400 bg-[#111111] border-1 text-[#A0A0A0] hover:text-white" size="sm" onClick={() => removeFromWatchlist(row.original.id)}>
+          Remove
+        </Button>
       ),
-    },
-  ];
+    }
+  ]
 
   const table = useReactTable({
-    data: cryptoData,
+    data: watchlistData,
     columns,
-    state: {
-      sorting,
-      globalFilter,
-    },
+    state: { sorting, globalFilter },
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
@@ -175,20 +175,20 @@ export function CryptoTable({ cryptoData }: CryptoTableProps) {
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     globalFilterFn: "includesString",
-  });
+  })
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">Cryptocurrency Market</h2>
+        <h2 className="text-2xl font-bold">My Watchlist</h2>
         <Input
-          placeholder="Search cryptocurrencies..."
+          placeholder="Search..."
           value={globalFilter ?? ""}
           onChange={(event) => setGlobalFilter(event.target.value)}
           className="max-w-sm"
         />
       </div>
-      
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -198,46 +198,34 @@ export function CryptoTable({ cryptoData }: CryptoTableProps) {
                   <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                      : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  No cryptocurrencies in your watchlist.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      
+
       <div className="flex items-center justify-between space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
           Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{" "}
@@ -245,7 +233,7 @@ export function CryptoTable({ cryptoData }: CryptoTableProps) {
             (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
             table.getFilteredRowModel().rows.length
           )}{" "}
-          of {table.getFilteredRowModel().rows.length} cryptocurrencies
+          of {table.getFilteredRowModel().rows.length} coins
         </div>
         <div className="space-x-2">
           <Button
@@ -270,5 +258,5 @@ export function CryptoTable({ cryptoData }: CryptoTableProps) {
         </div>
       </div>
     </div>
-  );
-} 
+  )
+}

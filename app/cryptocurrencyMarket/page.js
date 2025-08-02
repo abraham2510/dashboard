@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/components/loading";
 import { useEffect, useState } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { CryptoTable } from "@/components/crypto-table";
@@ -43,27 +44,7 @@ export default function Page() {
 
   if (loading) {
     return (
-      <SidebarProvider
-        style={
-          {
-            "--sidebar-width": "calc(var(--spacing) * 72)",
-            "--header-height": "calc(var(--spacing) * 12)",
-          }
-        }
-      >
-        <AppSidebar variant="inset" />
-        <SidebarInset>
-          <SiteHeader />
-          <div className="flex flex-1 flex-col">
-            <div className="flex flex-col items-center justify-center min-h-screen">
-              <div className="flex items-center gap-2">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-                <span className="text-lg">Loading cryptocurrency data...</span>
-              </div>
-            </div>
-          </div>
-        </SidebarInset>
-      </SidebarProvider>
+      <Loading />
     );
   }
 
@@ -116,7 +97,7 @@ export default function Page() {
             <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
               <div className="px-4 lg:px-6">
                 <div className="mb-6">
-                  <h1 className="text-3xl font-bold mb-2">Cryptocurrency Market</h1>
+                  <h1 className="text-3xl font-bold mb-2">Top Cryptocurrency</h1>
                   <p className="text-muted-foreground">
                     Real-time cryptocurrency prices, market cap, and trading volume data
                   </p>
