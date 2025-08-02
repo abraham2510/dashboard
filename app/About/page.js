@@ -32,7 +32,7 @@ export default function About(){
                     
                     <div className="max-w-4xl space-y-6">
                         <div>
-                            <h2 className="text-xl font-semibold mb-3">Hi, I'm Abraham Bill Clinton.</h2>
+                            <h2 className="text-xl font-semibold mb-3">Hi, I&apos;m Abraham Bill Clinton.</h2>
                             <p className="text-muted-foreground leading-relaxed">
                                 This cryptocurrency dashboard was built using Next.js as part of my journey into modern web development. 
                                 The goal of this project was not only to create a functional application but also to strengthen my 
@@ -67,7 +67,7 @@ export default function About(){
 
                         <div>
                             <p className="text-muted-foreground leading-relaxed">
-                                This project reflects my ongoing growth as a developer, and I'm continuously working to improve it 
+                                This project reflects my ongoing growth as a developer, and I&apos;m continuously working to improve it 
                                 as I explore more of the full stack ecosystem.
                             </p>
                         </div>
