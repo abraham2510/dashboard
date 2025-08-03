@@ -3,14 +3,13 @@
 <!-- HEADER STYLE: CLASSIC -->
 <div align="center">
 
-<img src="https://ik.imagekit.io/c2zxrxqp6/Screenshot%202025-08-03%20at%209.20.15%E2%80%AFAM.png?updatedAt=1754193785672" width="50%" style="position: relative; top: 0; right: 0;" alt="Project Logo"/>
+<img src="https://ik.imagekit.io/c2zxrxqp6/Screenshot%202025-08-03%20at%209.20.15%E2%80%AFAM.png?updatedAt=1754193785672" width="90%" style="position: relative; top: 0; right: 0;" alt="Project Logo"/>
 
 # DASHBOARD
 
 <em></em>
 
 <!-- BADGES -->
-<img src="https://img.shields.io/github/license/abraham2510/dashboard?style=default&logo=opensourceinitiative&logoColor=white&color=0080ff" alt="license">
 <img src="https://img.shields.io/github/last-commit/abraham2510/dashboard?style=default&logo=git&logoColor=white&color=0080ff" alt="last-commit">
 <img src="https://img.shields.io/github/languages/top/abraham2510/dashboard?style=default&color=0080ff" alt="repo-top-language">
 <img src="https://img.shields.io/github/languages/count/abraham2510/dashboard?style=default&color=0080ff" alt="repo-language-count">
@@ -21,6 +20,24 @@
 
 </div>
 <br>
+
+<div>
+	<p>## Overview
+
+Hi, I'm **Abraham Bill Clinton**.
+
+This project — a **cryptocurrency dashboard** — was built using **Next.js** as part of my journey into modern web development. The goal wasn't just to create a functional and visually engaging app, but also to deepen my understanding of real-world development workflows.
+
+Throughout the process, I leveraged **AI tools** like **Cursor** and **ChatGPT** as learning companions. They played a key role in helping me:
+
+- Clarify unfamiliar concepts
+- Debug challenging issues
+- Accelerate feature implementation
+
+That said, **every decision, integration, and line of code** in this project reflects my own hands-on effort, learning, and growth.
+
+</p>
+</div>
 
 ---
 
