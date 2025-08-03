@@ -3,7 +3,7 @@
 <!-- HEADER STYLE: CLASSIC -->
 <div align="center">
 
-<img src="readmeai/assets/logos/purple.svg" width="30%" style="position: relative; top: 0; right: 0;" alt="Project Logo"/>
+<img src="https://ik.imagekit.io/c2zxrxqp6/Screenshot%202025-08-03%20at%209.20.15%E2%80%AFAM.png?updatedAt=1754193785672" width="50%" style="position: relative; top: 0; right: 0;" alt="Project Logo"/>
 
 # DASHBOARD
 
@@ -16,7 +16,6 @@
 <img src="https://img.shields.io/github/languages/count/abraham2510/dashboard?style=default&color=0080ff" alt="repo-language-count">
 
 <!-- default option, no dependency badges. -->
-
 
 <!-- default option, no dependency badges. -->
 
@@ -31,12 +30,12 @@
 - [Overview](#overview)
 - [Features](#features)
 - [Project Structure](#project-structure)
-    - [Project Index](#project-index)
+  - [Project Index](#project-index)
 - [Getting Started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-    - [Usage](#usage)
-    - [Testing](#testing)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Testing](#testing)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
@@ -45,8 +44,6 @@
 ---
 
 ## Overview
-
-
 
 ---
 
@@ -586,44 +583,47 @@ Build dashboard from the source and intsall dependencies:
 
 1. **Clone the repository:**
 
-    ```sh
-    ❯ git clone https://github.com/abraham2510/dashboard
-    ```
+   ```sh
+   ❯ git clone https://github.com/abraham2510/dashboard
+   ```
 
 2. **Navigate to the project directory:**
 
-    ```sh
-    ❯ cd dashboard
-    ```
+   ```sh
+   ❯ cd dashboard
+   ```
 
 3. **Install the dependencies:**
 
 <!-- SHIELDS BADGE CURRENTLY DISABLED -->
-	<!-- [![npm][npm-shield]][npm-link] -->
-	<!-- REFERENCE LINKS -->
-	<!-- [npm-shield]: https://img.shields.io/badge/npm-CB3837.svg?style={badge_style}&logo=npm&logoColor=white -->
-	<!-- [npm-link]: https://www.npmjs.com/ -->
 
-	**Using [npm](https://www.npmjs.com/):**
+    <!-- [![npm][npm-shield]][npm-link] -->
+    <!-- REFERENCE LINKS -->
+    <!-- [npm-shield]: https://img.shields.io/badge/npm-CB3837.svg?style={badge_style}&logo=npm&logoColor=white -->
+    <!-- [npm-link]: https://www.npmjs.com/ -->
 
-	```sh
-	❯ npm install
-	```
+    **Using [npm](https://www.npmjs.com/):**
+
+    ```sh
+    ❯ npm install
+    ```
 
 ### Usage
 
 Run the project with:
 
 **Using [npm](https://www.npmjs.com/):**
+
 ```sh
 npm start
 ```
 
 ### Testing
 
-Dashboard uses the {__test_framework__} test framework. Run the test suite with:
+Dashboard uses the {**test_framework**} test framework. Run the test suite with:
 
 **Using [npm](https://www.npmjs.com/):**
+
 ```sh
 npm test
 ```
@@ -632,7 +632,7 @@ npm test
 
 ## Roadmap
 
-- [X] **`Task 1`**: <strike>Implement feature one.</strike>
+- [x] **`Task 1`**: <strike>Implement feature one.</strike>
 - [ ] **`Task 2`**: Implement feature two.
 - [ ] **`Task 3`**: Implement feature three.
 
@@ -697,8 +697,6 @@ Dashboard is protected under the [LICENSE](https://choosealicense.com/licenses) 
 
 </div>
 
-
 [back-to-top]: https://img.shields.io/badge/-BACK_TO_TOP-151515?style=flat-square
-
 
 ---
